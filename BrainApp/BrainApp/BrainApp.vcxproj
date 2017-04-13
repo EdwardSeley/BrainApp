@@ -127,11 +127,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Diagram.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="DisplayApp.cpp" />
     <ClCompile Include="PageManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\OneDrive\Documents\Visual Studio 2017\Header Files\headers\BrainApp\Diagram.h" />
     <ClInclude Include="..\..\..\..\..\OneDrive\Documents\Visual Studio 2017\Header Files\headers\BrainApp\DisplayApp.h" />
     <ClInclude Include="..\..\..\..\..\OneDrive\Documents\Visual Studio 2017\Header Files\headers\BrainApp\PageManager.h" />
   </ItemGroup>

@@ -24,12 +24,18 @@
     <ClCompile Include="PageManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Diagram.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\OneDrive\Documents\Visual Studio 2017\Header Files\headers\BrainApp\DisplayApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\..\OneDrive\Documents\Visual Studio 2017\Header Files\headers\BrainApp\PageManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\OneDrive\Documents\Visual Studio 2017\Header Files\headers\BrainApp\Diagram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

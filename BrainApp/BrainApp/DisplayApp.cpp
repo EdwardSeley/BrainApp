@@ -5,7 +5,7 @@
 
 using namespace std;
 
-bool DisplayApp::init(char * title)
+SDL_Renderer * DisplayApp::init(char * title)
 {
 	SDL_DisplayMode * pDisplayMode = new SDL_DisplayMode();
 
@@ -32,13 +32,17 @@ bool DisplayApp::init(char * title)
 	
 	pRenderer = SDL_CreateRenderer(pWindow, -1, NULL);
 	
-	return true;
+	return pRenderer;
 }
 
-void DisplayApp::render()
+void DisplayApp::render(int red, int blue, int green, int alpha)
 {
-	SDL_SetRenderDrawColor(pRenderer, 57, 133, 118, 155);
+	SDL_SetRenderDrawColor(pRenderer, red, blue, green, alpha);
 	SDL_RenderClear(pRenderer);
+}
+
+void DisplayApp::update()
+{
 	SDL_RenderPresent(pRenderer);
 }
 
