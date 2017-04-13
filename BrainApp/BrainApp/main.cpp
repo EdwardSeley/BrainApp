@@ -9,6 +9,5 @@ void main()
 {
 	PageManager * pages = new PageManager();
 	pages->startingPage();
-	SDL_Delay(20000);
 
 }

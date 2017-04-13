@@ -4,7 +4,13 @@
 
 void PageManager::startingPage()
 {
-	DisplayApp * display = new DisplayApp();
+	display->init("The Brain App: An Interactive Study Guide");
 
-	display->init("Welcome to the Brain App");
+	while (display->keepRunning())
+	{
+		display->render();
+		//display->update();
+		display->manageEvents();
+	}
+
 }
