@@ -8,6 +8,7 @@ using namespace std;
 void main()
 {
 	PageManager * pages = new PageManager();
-	pages->startingPage();
+	if (!pages->startingPage())
+		pages->secondPage();
 
 }

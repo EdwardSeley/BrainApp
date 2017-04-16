@@ -22,7 +22,7 @@ SDL_Renderer * DisplayApp::init(char * title)
 		return false;
 	}
 
-	pWindow = SDL_CreateWindow(title, pDisplayMode->w / 2 - 250, pDisplayMode->h / 2 - 250, 500, 500, SDL_WINDOW_SHOWN); //prints window in the middle
+	pWindow = SDL_CreateWindow(title, 50, 50, 900, 800, SDL_WINDOW_SHOWN); //prints window in the middle
 
 	if (pWindow == 0)
 	{
@@ -46,9 +46,16 @@ void DisplayApp::update()
 	SDL_RenderPresent(pRenderer);
 }
 
-bool DisplayApp::keepRunning()
+bool DisplayApp::stayOnPage()
 {
-	return runProgram;
+	return samePage;
+}
+
+void DisplayApp::clean()
+{
+	SDL_DestroyWindow(pWindow);
+	SDL_DestroyRenderer(pRenderer);
+	SDL_Quit();
 }
 
 void DisplayApp::manageEvents()
@@ -60,10 +67,19 @@ void DisplayApp::manageEvents()
 		switch ((*event).type)
 		{
 		case SDL_QUIT:
-				runProgram = false;
-				cout << "Ending Program." << endl;
+			this->clean();
+			cout << "Ending Program." << endl;
+			SDL_Quit();
+			exit(EXIT_FAILURE);
+		case SDL_MOUSEBUTTONDOWN:
+				if (event->button.x > 67 && event->button.x < 330 && event->button.y > 479 && event->button.y < 579)
+				{
+					cout << " x coordinate: " << event->button.x << " y coordinate: " << event->button.x << endl;
+					samePage = false;
+				}
 		default:
 			break;
 		}
 	}
 }
+
