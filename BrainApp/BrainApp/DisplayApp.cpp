@@ -5,33 +5,17 @@
 
 using namespace std;
 
-SDL_Renderer * DisplayApp::init(char * title)
+SDL_Renderer * DisplayApp::init(SDL_Window * pWindow)
 {
-	SDL_DisplayMode * pDisplayMode = new SDL_DisplayMode();
-
-	if ( SDL_Init(SDL_INIT_VIDEO) < 0)
-	{
-		SDL_Log(" SDL_VIDEO could not be initilized: %s", SDL_GetError());
-		return false;
-	}
-
-
-	if (SDL_GetCurrentDisplayMode(0, pDisplayMode) != 0)
-	{
-		SDL_Log("SDL_GetDisplayMode failed: %s", SDL_GetError());
-		return false;
-	}
-
-	pWindow = SDL_CreateWindow(title, 50, 50, 900, 800, SDL_WINDOW_SHOWN); //prints window in the middle
-
-	if (pWindow == 0)
-	{
-		SDL_Log("Window creation failed: %s", SDL_GetError());
-		return false;
-	}
 	
 	pRenderer = SDL_CreateRenderer(pWindow, -1, NULL);
-	
+
+
+	if (pRenderer == 0)
+	{
+		SDL_Log("Renderer creation failed: %s", SDL_GetError());
+	}
+
 	return pRenderer;
 }
 
@@ -51,35 +35,11 @@ bool DisplayApp::stayOnPage()
 	return samePage;
 }
 
-void DisplayApp::clean()
+SDL_Renderer * DisplayApp::getRenderer()
 {
-	SDL_DestroyWindow(pWindow);
-	SDL_DestroyRenderer(pRenderer);
-	SDL_Quit();
+	return pRenderer;
 }
 
-void DisplayApp::manageEvents()
-{
-	SDL_Event * event = new SDL_Event();
 
-	if (SDL_PollEvent(event))
-	{
-		switch ((*event).type)
-		{
-		case SDL_QUIT:
-			this->clean();
-			cout << "Ending Program." << endl;
-			SDL_Quit();
-			exit(EXIT_FAILURE);
-		case SDL_MOUSEBUTTONDOWN:
-				if (event->button.x > 67 && event->button.x < 330 && event->button.y > 479 && event->button.y < 579)
-				{
-					cout << " x coordinate: " << event->button.x << " y coordinate: " << event->button.x << endl;
-					samePage = false;
-				}
-		default:
-			break;
-		}
-	}
-}
+
 

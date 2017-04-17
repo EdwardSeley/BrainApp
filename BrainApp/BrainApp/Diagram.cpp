@@ -43,7 +43,7 @@ void Diagram::drawFrame(int numOfFrames, int x, int y, SDL_Renderer * pRenderer)
 	SDL_Rect * srcRect = new SDL_Rect();
 	SDL_Rect * destRect = new SDL_Rect();
 	SDL_QueryTexture(pTexture, NULL, NULL, &(srcRect->w), &(srcRect->h));
-	srcRect->x = 350 * currentFrame;
+	srcRect->x = 350 * (currentFrame - 1);
 	srcRect->y = 0;
 	destRect->y = y;
 	destRect->x = x;
@@ -51,4 +51,5 @@ void Diagram::drawFrame(int numOfFrames, int x, int y, SDL_Renderer * pRenderer)
 	destRect->h = srcRect->h;
 	SDL_RenderCopy(pRenderer, pTexture, srcRect, destRect);
 }
+
 
