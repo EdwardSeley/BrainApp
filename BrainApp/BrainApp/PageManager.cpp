@@ -41,14 +41,16 @@ void PageManager::startingPage()
 
 }
 
-void PageManager::mainMenu()
+void PageManager::historyPage()
 {
 	SDL_Renderer * pRenderer = display->getRenderer();
 	display->samePage = true;
+	historyOfNeuroscience->load("HistoryText.png", pRenderer);
 
 	while (display->stayOnPage())
 	{
 		display->render(63, 184, 175, 255);
+		historyOfNeuroscience->draw(0, 120, pRenderer);
 		display->update();
 		this->manageEvents(NULL, NULL, NULL, NULL, NULL, NULL);
 	}
@@ -57,6 +59,12 @@ void PageManager::mainMenu()
 
 bool PageManager::manageEvents(Diagram * button, bool clicked, int left, int right, int bottom, int top)
 {
+
+	int x = 0;
+	int y = 0;
+
+	SDL_GetMouseState(&x, &y);
+	cout << "x: " << x << " y: " << y << endl;
 
 	if (button != NULL)
 	{

@@ -9,7 +9,7 @@ int main()
 {
 	SDL_Init(SDL_INIT_VIDEO);
 
-	SDL_Window * pWindow = SDL_CreateWindow("The Brain App: An Interactive Study Guide", 50, 50, 1100, 800, SDL_WINDOW_SHOWN); //prints window in the middle
+	SDL_Window * pWindow = SDL_CreateWindow("The Brain App: An Interactive Study Guide", 50, 50, 1100, 880, SDL_WINDOW_SHOWN); //prints window in the middle
 
 	if (pWindow == 0)
 	{
@@ -20,5 +20,5 @@ int main()
 	PageManager * pages = new PageManager();
 	pages->introSequence(pWindow);
 	pages->startingPage();
-	pages->mainMenu();
+	pages->historyPage();
 }
