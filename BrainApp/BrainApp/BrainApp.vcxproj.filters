@@ -24,10 +24,10 @@
     <ClCompile Include="PageManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Diagram.cpp">
+    <ClCompile Include="Button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Button.cpp">
+    <ClCompile Include="Image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -38,10 +38,10 @@
     <ClInclude Include="..\..\..\..\..\OneDrive\Documents\Visual Studio 2017\Header Files\headers\BrainApp\PageManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\OneDrive\Documents\Visual Studio 2017\Header Files\headers\BrainApp\Diagram.h">
+    <ClInclude Include="..\..\..\..\..\OneDrive\Documents\Visual Studio 2017\Header Files\headers\BrainApp\Button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\OneDrive\Documents\Visual Studio 2017\Header Files\headers\BrainApp\Button.h">
+    <ClInclude Include="..\..\..\..\..\OneDrive\Documents\Visual Studio 2017\Header Files\headers\BrainApp\Image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,4 +1,4 @@
-#include <BrainApp\Diagram.h>
+#include <BrainApp\Image.h>
 #include <SDL\SDL.h>
 #include <SDL\SDL_image.h>
 #include <iostream>
@@ -6,10 +6,10 @@
 
 using namespace std;
 
-void Diagram::load(char * fileLocation, SDL_Renderer * pRenderer)
+void Image::load(char * fileLocation, SDL_Renderer * pRenderer)
 {
 	SDL_Surface * pSurface = IMG_Load(fileLocation);
-	
+
 	if (pSurface == 0)
 	{
 		SDL_Log("Surface did not load: ", SDL_GetError());
@@ -25,7 +25,7 @@ void Diagram::load(char * fileLocation, SDL_Renderer * pRenderer)
 	SDL_FreeSurface(pSurface);
 }
 
-void Diagram::draw(int x, int y, SDL_Renderer * pRenderer)
+void Image::draw(int x, int y, SDL_Renderer * pRenderer)
 {
 	SDL_Rect * srcRect = new SDL_Rect();
 	SDL_Rect * destRect = new SDL_Rect();
@@ -38,18 +38,9 @@ void Diagram::draw(int x, int y, SDL_Renderer * pRenderer)
 	SDL_RenderCopy(pRenderer, pTexture, srcRect, destRect);
 }
 
-void Diagram::drawFrame(int numOfFrames, int x, int y, SDL_Renderer * pRenderer)
+SDL_Texture * Image::getTexture()
 {
-	SDL_Rect * srcRect = new SDL_Rect();
-	SDL_Rect * destRect = new SDL_Rect();
-	SDL_QueryTexture(pTexture, NULL, NULL, &(srcRect->w), &(srcRect->h));
-	srcRect->x = 350 * (currentFrame - 1);
-	srcRect->y = 0;
-	destRect->y = y;
-	destRect->x = x;
-	destRect->w = srcRect->w = srcRect->w / numOfFrames;
-	destRect->h = srcRect->h;
-	SDL_RenderCopy(pRenderer, pTexture, srcRect, destRect);
+	return pTexture;
 }
 
 
