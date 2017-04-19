@@ -60,15 +60,17 @@ void PageManager::historyPage()
 	menuVector.push_back(computationsButton);
 	menuVector.push_back(resourcesButton);
 
+	historyButton->keepPressed();
+
 	while (display->stayOnPage())
 	{
 		display->render(63, 184, 175, 255);
-		historyOfNeuroscience->draw(0, 100, pRenderer);
-		historyButton->drawFrame(3, 0, 0, pRenderer);
-		philosophyButton->drawFrame(3, 190, 0, pRenderer);
+		historyOfNeuroscience->draw(-15, 100, pRenderer);
+		historyButton->drawFrame(3, -1, 0, pRenderer);
+		philosophyButton->drawFrame(3, 190, -1, pRenderer);
 		scienceButton->drawFrame(3, 379, 0, pRenderer);
-		computationsButton->drawFrame(3, 569, 0, pRenderer);
-		resourcesButton->drawFrame(3, 840, 0, pRenderer);
+		computationsButton->drawFrame(3, 568, -1, pRenderer);
+		resourcesButton->drawFrame(3, 848, 0, pRenderer);
 		display->update();
 		this->manageEvents(menuVector);
 	}
@@ -106,7 +108,7 @@ bool PageManager::manageEvents(vector <Button *> buttonVector)
 				buttonVector.at(z)->setCurrentFrame(2);
 			}
 
-			else
+			else if (!buttonVector.at(z)->keepButtonPressed)
 				buttonVector.at(z)->setCurrentFrame(1);
 		}
 

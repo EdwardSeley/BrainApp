@@ -33,3 +33,9 @@ void Button::setCurrentFrame(int frameNumber)
 	currentFrame = frameNumber;
 }
 
+void Button::keepPressed()
+{
+	currentFrame = 3;
+	keepButtonPressed = true;
+}
+
