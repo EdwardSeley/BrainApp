@@ -1,5 +1,5 @@
 # The Brain App
-This application serves as an interactive study guide through which one can come to learn more about the brain. There are four different areas of study that I plan to include in this app and they are: history of neuroscience, philosophy of the mind, neurobiology, and computational neuroscience. So far only the history of neuroscience has been completed. 
+This application serves as an interactive study guide through which one can come to learn more about the brain. There are four different areas of study that I plan to include in this app and they are: history of neuroscience, philosophy of the mind, neurobiology, and computational neuroscience. 
 
 # Title Page 
 ![alt tag](https://github.com/EdwardSeley/BrainApp/blob/master/Screenshots/BrainAppTitlePage.PNG)
