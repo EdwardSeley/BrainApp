@@ -20,5 +20,30 @@ int main()
 	PageManager * pages = new PageManager();
 	pages->introSequence(pWindow);
 	pages->startingPage();
-	pages->historyPage();
+	int pageIndex = 0;
+	
+	while (true)
+	{
+		switch (pageIndex)
+		{
+		case 0:
+			pageIndex = pages->historyPage();
+			break;
+		case 1:
+			pageIndex = pages->philosophyPage();
+			break;
+		case 2:
+			pageIndex = pages->sciencePage();
+			break;
+		case 3:
+			pageIndex = pages->computationsPage();
+			break;
+		case 4:
+			pageIndex = pages->resourcesPage();
+			break;
+		}
+	}
+
+	SDL_Delay(300);
+
 }

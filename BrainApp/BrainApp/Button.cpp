@@ -28,6 +28,11 @@ int Button::getCurrentFrame()
 	return currentFrame;
 }
 
+void Button::release()
+{
+	keepButtonPressed = false;
+}
+
 void Button::setCurrentFrame(int frameNumber)
 {
 	currentFrame = frameNumber;
