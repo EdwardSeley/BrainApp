@@ -19,7 +19,6 @@ void Button::drawFrame()
 	destRect->x = get<0>(coordinates);
 	destRect->y = get<1>(coordinates);
 	destRect->w = srcRect->w = srcRect->w / frames;
-	cout << "width: " << destRect->w << endl;
 	destRect->h = srcRect->h;
 	SDL_RenderCopy(pRenderer, this->getTexture(), srcRect, destRect);
 }

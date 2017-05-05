@@ -11,8 +11,10 @@ void PageManager::introSequence(SDL_Window * pWindow)
 {
 	pRenderer = display->init(pWindow);
 	introSequenceImage->load("IntroSequence.png", pRenderer, 20, 0);
+	
 	vector <Image *> imageVector;
 	imageVector.push_back(introSequenceImage);
+	
 	while (SDL_GetTicks() < 3000)
 	{
 		this->renderDisplay(imageVector);
@@ -25,18 +27,17 @@ void PageManager::startingPage()
 	brain->load("Brain Intro.png", pRenderer, 230, 20);
 	startButton->load("StartButton.png", pRenderer, 80, 430, 3);
 	credit->load("Edward.png", pRenderer, 110, 750);
+	
 	vector <Image *> imageVector;
 	imageVector.push_back(brain);
 	imageVector.push_back(credit);
+	
 	vector <Button *> menuVector;
 	menuVector.push_back(startButton);
-	int clicked = -1;
-	while (display->stayOnPage())
-	{
-		if (clicked != -1)
-			display->samePage = false;
-		clicked = this->renderDisplay(imageVector, menuVector);
-	}
+	bool samePage = true;
+	
+	this->renderDisplay(imageVector, menuVector);
+
 
 }
 
@@ -47,124 +48,112 @@ int PageManager::historyPage()
 	imageVector.push_back(historyOfNeuroscience);
 	vector <Button *> menuVector = this->loadMenu(pRenderer);
 	historyButton->keepPressed();
-	int pageIndex = -1; //Where to go on the navigational menu (-1 is default)
-	int pageSwitch = -1;
 
-	while (pageSwitch == -1)
-	{
-		pageSwitch = pageIndex; // Delays the render loop so one last iteration
-		pageIndex = this->renderDisplay(imageVector, menuVector);
-	}
+	int pageIndex = this->renderDisplay(imageVector, menuVector);
 
-	historyButton->release();
-	return pageSwitch;
+	historyButton->release(); //button is no longer pressed
+	return pageIndex;
 
 }
 
 
 int PageManager::philosophyPage()
 {
+	historyOfNeuroscience->load("HistoryText.png", pRenderer, -15, 100);
+	vector <Image *> imageVector;
+	imageVector.push_back(historyOfNeuroscience);
 	vector <Button *> menuVector = this->loadMenu(pRenderer);
 	philosophyButton->keepPressed();
-	int pageIndex = -1; //Where to go on the navigational menu (-1 is default)
-	int pageSwitch = -1;
-	vector <Image *> emptyVec;
-	while (pageSwitch == -1)
-	{
-		pageSwitch = pageIndex; // Delays the render loop so one last iteration
-		//pageIndex = this->renderDisplay(menuVector);
-	}
 
-	philosophyButton->release();
-	return pageSwitch;
+	int pageIndex = this->renderDisplay(imageVector, menuVector);
 
+	philosophyButton->release(); //button is no longer pressed
+	return pageIndex;
 }
 
 int PageManager::sciencePage()
 {
+	historyOfNeuroscience->load("HistoryText.png", pRenderer, -15, 100);
+	vector <Image *> imageVector;
+	imageVector.push_back(historyOfNeuroscience);
 	vector <Button *> menuVector = this->loadMenu(pRenderer);
 	scienceButton->keepPressed();
-	int pageIndex = -1; //Where to go on the navigational menu (-1 is default)
-	int pageSwitch = -1;
 
-	while (pageSwitch == -1)
-	{
-		pageSwitch = pageIndex; // Delays the render loop so one last iteration
-		//pageIndex = this->renderDisplay(menuVector);
-	}
+	int pageIndex = this->renderDisplay(imageVector, menuVector);
 
-	scienceButton->release();
-	return pageSwitch;
-
+	scienceButton->release(); //button is no longer pressed
+	return pageIndex;
 }
 
 int PageManager::computationsPage()
 {
+	historyOfNeuroscience->load("HistoryText.png", pRenderer, -15, 100);
+	vector <Image *> imageVector;
+	imageVector.push_back(historyOfNeuroscience);
 	vector <Button *> menuVector = this->loadMenu(pRenderer);
 	computationsButton->keepPressed();
-	int pageIndex = -1; //Where to go on the navigational menu (-1 is default)
-	int pageSwitch = -1;
 
-	while (pageSwitch == -1)
-	{
-		pageSwitch = pageIndex; // Delays the render loop so one last iteration
-		//pageIndex = this->renderDisplay(menuVector);
-	}
+	int pageIndex = this->renderDisplay(imageVector, menuVector);
 
-	computationsButton->release();
-	return pageSwitch;
-
+	computationsButton->release(); //button is no longer pressed
+	return pageIndex;
 }
 
 int PageManager::resourcesPage()
 {
+	historyOfNeuroscience->load("HistoryText.png", pRenderer, -15, 100);
+	vector <Image *> imageVector;
+	imageVector.push_back(historyOfNeuroscience);
 	vector <Button *> menuVector = this->loadMenu(pRenderer);
 	resourcesButton->keepPressed();
-	int pageIndex = -1; //Where to go on the navigational menu (-1 is default)
-	int pageSwitch = -1;
 
-	while (pageSwitch == -1)
-	{
-		pageSwitch = pageIndex; // Delays the render loop so one last iteration
-		//pageIndex = this->renderDisplay(menuVector);
-	}
+	int pageIndex = this->renderDisplay(imageVector, menuVector);
 
-	resourcesButton->release();
-	return pageSwitch;
-
+	resourcesButton->release(); //button is no longer pressed
+	return pageIndex;
 }
 
 int PageManager::renderDisplay(vector <Image *> imageVector, vector <Button *> menuVector)
 {
-	display->render(63, 184, 175, 255);
-	int pageIndex = -1;
 	
-	if (!menuVector.empty())
+	int pageIndex = -1; //default index for pages
+
+	while (pageIndex != -1) //page change has not been requested
 	{
-		
-		if (menuVector.size() == 1)
-			menuVector.at(0)->drawFrame();
+		display->render(63, 184, 175, 255);
+
+		if (!menuVector.empty())
+		{
+
+			pageIndex = this->manageEvents(menuVector);
+
+			if (menuVector.size() == 1)
+				menuVector.at(0)->drawFrame();
+			else
+				this->renderMenu(pRenderer);
+
+		}
+
 		else
-			this->renderMenu(pRenderer);
-		pageIndex = this->manageEvents(menuVector);
-	}
-	else
-	{
-		this->manageEvents();
+		{
+			this->manageEvents();
+		}
+
+		if (!imageVector.empty())
+		{
+			for (int x = 0; x < imageVector.size(); x++)
+			{
+				if (imageVector.at(x)->frames > 1)
+					((Button *)imageVector.at(x))->drawFrame();
+				else
+					imageVector.at(x)->draw();
+			}
+		}
+
+		display->update();
+
 	}
 
-	if (!imageVector.empty())
-	{
-		for (int x = 0; x < imageVector.size(); x++)
-		{
-			if (imageVector.at(x)->frames > 1)
-				((Button *) imageVector.at(x))->drawFrame();
-			else 
-				imageVector.at(x)->draw();
-		}
-	}
-	cout << "pageIndex: " << pageIndex << endl;
-	display->update();
 	return pageIndex;
 
 }
