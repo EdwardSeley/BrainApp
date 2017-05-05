@@ -15,10 +15,7 @@ void PageManager::introSequence(SDL_Window * pWindow)
 	vector <Image *> imageVector;
 	imageVector.push_back(introSequenceImage);
 	
-	while (SDL_GetTicks() < 3000)
-	{
-		this->renderDisplay(imageVector);
-	}
+	this->renderDisplay(imageVector, 3000);
 	
 }
 
@@ -36,7 +33,7 @@ void PageManager::startingPage()
 	menuVector.push_back(startButton);
 	bool samePage = true;
 	
-	this->renderDisplay(imageVector, menuVector);
+	this->renderDisplay(imageVector, 0, menuVector);
 
 
 }
@@ -49,7 +46,7 @@ int PageManager::historyPage()
 	vector <Button *> menuVector = this->loadMenu(pRenderer);
 	historyButton->keepPressed();
 
-	int pageIndex = this->renderDisplay(imageVector, menuVector);
+	int pageIndex = this->renderDisplay(imageVector, 0, menuVector);
 
 	historyButton->release(); //button is no longer pressed
 	return pageIndex;
@@ -65,7 +62,7 @@ int PageManager::philosophyPage()
 	vector <Button *> menuVector = this->loadMenu(pRenderer);
 	philosophyButton->keepPressed();
 
-	int pageIndex = this->renderDisplay(imageVector, menuVector);
+	int pageIndex = this->renderDisplay(imageVector, 0, menuVector);
 
 	philosophyButton->release(); //button is no longer pressed
 	return pageIndex;
@@ -79,7 +76,7 @@ int PageManager::sciencePage()
 	vector <Button *> menuVector = this->loadMenu(pRenderer);
 	scienceButton->keepPressed();
 
-	int pageIndex = this->renderDisplay(imageVector, menuVector);
+	int pageIndex = this->renderDisplay(imageVector, 0, menuVector);
 
 	scienceButton->release(); //button is no longer pressed
 	return pageIndex;
@@ -93,7 +90,7 @@ int PageManager::computationsPage()
 	vector <Button *> menuVector = this->loadMenu(pRenderer);
 	computationsButton->keepPressed();
 
-	int pageIndex = this->renderDisplay(imageVector, menuVector);
+	int pageIndex = this->renderDisplay(imageVector, 0, menuVector);
 
 	computationsButton->release(); //button is no longer pressed
 	return pageIndex;
@@ -107,18 +104,21 @@ int PageManager::resourcesPage()
 	vector <Button *> menuVector = this->loadMenu(pRenderer);
 	resourcesButton->keepPressed();
 
-	int pageIndex = this->renderDisplay(imageVector, menuVector);
+	int pageIndex = this->renderDisplay(imageVector, 0, menuVector);
 
 	resourcesButton->release(); //button is no longer pressed
 	return pageIndex;
 }
 
-int PageManager::renderDisplay(vector <Image *> imageVector, vector <Button *> menuVector)
+int PageManager::renderDisplay(vector <Image *> imageVector, int secondsLooping, vector <Button *> menuVector)
 {
 	
 	int pageIndex = -1; //default index for pages
+	int start = SDL_GetTicks();
 
-	while (pageIndex != -1) //page change has not been requested
+
+	while (pageIndex == -1 && (SDL_GetTicks() - start < secondsLooping || secondsLooping == 0) ) //page change has not been requested 
+																				//or time hasn't elapsed past 'secondsLooping' argument 
 	{
 		display->render(63, 184, 175, 255);
 
