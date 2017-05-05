@@ -6,9 +6,13 @@
 
 using namespace std;
 
-void Image::load(char * fileLocation, SDL_Renderer * pRenderer)
+void Image::load(char * fileLocation, SDL_Renderer * pRen, int x, int y, int numOfFrames)
 {
+
+	coordinates = make_pair(x, y);
 	SDL_Surface * pSurface = IMG_Load(fileLocation);
+	pRenderer = pRen;
+	frames = numOfFrames;
 
 	if (pSurface == 0)
 	{
@@ -25,14 +29,14 @@ void Image::load(char * fileLocation, SDL_Renderer * pRenderer)
 	SDL_FreeSurface(pSurface);
 }
 
-void Image::draw(int x, int y, SDL_Renderer * pRenderer)
+void Image::draw()
 {
 	SDL_Rect * srcRect = new SDL_Rect();
 	SDL_Rect * destRect = new SDL_Rect();
 	SDL_QueryTexture(pTexture, NULL, NULL, &(srcRect->w), &(srcRect->h));
 	srcRect->x = srcRect->y = 0;
-	destRect->x = x;
-	destRect->y = y;
+	destRect->x = get<0>(coordinates);
+	destRect->y = get<1>(coordinates);
 	destRect->w = srcRect->w;
 	destRect->h = srcRect->h;
 	SDL_RenderCopy(pRenderer, pTexture, srcRect, destRect);

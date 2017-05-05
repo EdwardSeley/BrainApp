@@ -5,49 +5,46 @@
 #include <SDL\SDL_mouse.h>
 #include <vector>
 
+SDL_Renderer * pRenderer;
+
 void PageManager::introSequence(SDL_Window * pWindow)
 {
-	SDL_Renderer * pRenderer = display->init(pWindow);
-	introSequenceImage->load("IntroSequence.png", pRenderer);
-	vector <Button *> emptyVec;
+	pRenderer = display->init(pWindow);
+	introSequenceImage->load("IntroSequence.png", pRenderer, 20, 0);
+	vector <Image *> imageVector;
+	imageVector.push_back(introSequenceImage);
 	while (SDL_GetTicks() < 3000)
 	{
-		display->render(63, 184, 175, 255);
-		introSequenceImage->draw(20, 0, pRenderer);
-		display->update();
-		this->manageEvents(emptyVec);
+		this->renderDisplay(imageVector);
 	}
 	
 }
 
 void PageManager::startingPage()
 {
-	SDL_Renderer * pRenderer = display->getRenderer();
-	brain->load("Brain Intro.png", pRenderer);
-	startButton->load("StartButton.png", pRenderer);
-	credit->load("Edward.png", pRenderer);
-	vector <Button *> buttonVector;
-	buttonVector.push_back(startButton);
+	brain->load("Brain Intro.png", pRenderer, 230, 20);
+	startButton->load("StartButton.png", pRenderer, 80, 430, 3);
+	credit->load("Edward.png", pRenderer, 110, 750);
+	vector <Image *> imageVector;
+	imageVector.push_back(brain);
+	imageVector.push_back(credit);
+	vector <Button *> menuVector;
+	menuVector.push_back(startButton);
 	int clicked = -1;
 	while (display->stayOnPage())
 	{
 		if (clicked != -1)
 			display->samePage = false;
-		display->render(63, 184, 175, 255);
-		brain->draw(230, 20, pRenderer);
-		credit->draw(110, 730, pRenderer);
-		startButton->drawFrame(3, 60, 430, pRenderer);
-		display->update();
-		clicked = this->manageEvents(buttonVector);
+		clicked = this->renderDisplay(imageVector, menuVector);
 	}
 
 }
 
 int PageManager::historyPage()
 {
-	SDL_Renderer * pRenderer = display->getRenderer();
-	historyOfNeuroscience->load("HistoryText.png", pRenderer);
-	display->samePage = true;
+	historyOfNeuroscience->load("HistoryText.png", pRenderer, -15, 100);
+	vector <Image *> imageVector;
+	imageVector.push_back(historyOfNeuroscience);
 	vector <Button *> menuVector = this->loadMenu(pRenderer);
 	historyButton->keepPressed();
 	int pageIndex = -1; //Where to go on the navigational menu (-1 is default)
@@ -56,11 +53,7 @@ int PageManager::historyPage()
 	while (pageSwitch == -1)
 	{
 		pageSwitch = pageIndex; // Delays the render loop so one last iteration
-		display->render(63, 184, 175, 255);
-		historyOfNeuroscience->draw(-15, 100, pRenderer);
-		this->renderMenu(pRenderer);
-		pageIndex = this->manageEvents(menuVector);
-		display->update();
+		pageIndex = this->renderDisplay(imageVector, menuVector);
 	}
 
 	historyButton->release();
@@ -71,20 +64,15 @@ int PageManager::historyPage()
 
 int PageManager::philosophyPage()
 {
-	SDL_Renderer * pRenderer = display->getRenderer();
-	display->samePage = true;
 	vector <Button *> menuVector = this->loadMenu(pRenderer);
 	philosophyButton->keepPressed();
 	int pageIndex = -1; //Where to go on the navigational menu (-1 is default)
 	int pageSwitch = -1;
-
+	vector <Image *> emptyVec;
 	while (pageSwitch == -1)
 	{
 		pageSwitch = pageIndex; // Delays the render loop so one last iteration
-		display->render(63, 184, 175, 255);
-		this->renderMenu(pRenderer);
-		pageIndex = this->manageEvents(menuVector);
-		display->update();
+		//pageIndex = this->renderDisplay(menuVector);
 	}
 
 	philosophyButton->release();
@@ -94,8 +82,6 @@ int PageManager::philosophyPage()
 
 int PageManager::sciencePage()
 {
-	SDL_Renderer * pRenderer = display->getRenderer();
-	display->samePage = true;
 	vector <Button *> menuVector = this->loadMenu(pRenderer);
 	scienceButton->keepPressed();
 	int pageIndex = -1; //Where to go on the navigational menu (-1 is default)
@@ -104,10 +90,7 @@ int PageManager::sciencePage()
 	while (pageSwitch == -1)
 	{
 		pageSwitch = pageIndex; // Delays the render loop so one last iteration
-		display->render(63, 184, 175, 255);
-		this->renderMenu(pRenderer);
-		pageIndex = this->manageEvents(menuVector);
-		display->update();
+		//pageIndex = this->renderDisplay(menuVector);
 	}
 
 	scienceButton->release();
@@ -117,8 +100,6 @@ int PageManager::sciencePage()
 
 int PageManager::computationsPage()
 {
-	SDL_Renderer * pRenderer = display->getRenderer();
-	display->samePage = true;
 	vector <Button *> menuVector = this->loadMenu(pRenderer);
 	computationsButton->keepPressed();
 	int pageIndex = -1; //Where to go on the navigational menu (-1 is default)
@@ -127,10 +108,7 @@ int PageManager::computationsPage()
 	while (pageSwitch == -1)
 	{
 		pageSwitch = pageIndex; // Delays the render loop so one last iteration
-		display->render(63, 184, 175, 255);
-		this->renderMenu(pRenderer);
-		pageIndex = this->manageEvents(menuVector);
-		display->update();
+		//pageIndex = this->renderDisplay(menuVector);
 	}
 
 	computationsButton->release();
@@ -140,8 +118,6 @@ int PageManager::computationsPage()
 
 int PageManager::resourcesPage()
 {
-	SDL_Renderer * pRenderer = display->getRenderer();
-	display->samePage = true;
 	vector <Button *> menuVector = this->loadMenu(pRenderer);
 	resourcesButton->keepPressed();
 	int pageIndex = -1; //Where to go on the navigational menu (-1 is default)
@@ -150,10 +126,7 @@ int PageManager::resourcesPage()
 	while (pageSwitch == -1)
 	{
 		pageSwitch = pageIndex; // Delays the render loop so one last iteration
-		display->render(63, 184, 175, 255);
-		this->renderMenu(pRenderer);
-		pageIndex = this->manageEvents(menuVector);
-		display->update();
+		//pageIndex = this->renderDisplay(menuVector);
 	}
 
 	resourcesButton->release();
@@ -161,13 +134,48 @@ int PageManager::resourcesPage()
 
 }
 
+int PageManager::renderDisplay(vector <Image *> imageVector, vector <Button *> menuVector)
+{
+	display->render(63, 184, 175, 255);
+	int pageIndex = -1;
+	
+	if (!menuVector.empty())
+	{
+		
+		if (menuVector.size() == 1)
+			menuVector.at(0)->drawFrame();
+		else
+			this->renderMenu(pRenderer);
+		pageIndex = this->manageEvents(menuVector);
+	}
+	else
+	{
+		this->manageEvents();
+	}
+
+	if (!imageVector.empty())
+	{
+		for (int x = 0; x < imageVector.size(); x++)
+		{
+			if (imageVector.at(x)->frames > 1)
+				((Button *) imageVector.at(x))->drawFrame();
+			else 
+				imageVector.at(x)->draw();
+		}
+	}
+	cout << "pageIndex: " << pageIndex << endl;
+	display->update();
+	return pageIndex;
+
+}
+
 vector <Button *> PageManager::loadMenu(SDL_Renderer * pRenderer)
 {
-	historyButton->load("Buttons/HistoryButton.png", pRenderer);
-	philosophyButton->load("Buttons/PhilosophyButton.png", pRenderer);
-	scienceButton->load("Buttons/ScienceButton.png", pRenderer);
-	computationsButton->load("Buttons/ComputationsButton.png", pRenderer);
-	resourcesButton->load("Buttons/ResourcesButton.png", pRenderer);
+	historyButton->load("Buttons/HistoryButton.png", pRenderer, -2, 0, 3);
+	philosophyButton->load("Buttons/PhilosophyButton.png", pRenderer, 188, -1, 3);
+	scienceButton->load("Buttons/ScienceButton.png", pRenderer, 377, 0, 3);
+	computationsButton->load("Buttons/ComputationsButton.png", pRenderer, 567, -1, 3);
+	resourcesButton->load("Buttons/ResourcesButton.png", pRenderer, 848, 0, 3);
 	vector <Button *> menuVector;
 	menuVector.push_back(historyButton);
 	menuVector.push_back(philosophyButton);
@@ -179,11 +187,11 @@ vector <Button *> PageManager::loadMenu(SDL_Renderer * pRenderer)
 
 void PageManager::renderMenu(SDL_Renderer * pRenderer)
 {
-	historyButton->drawFrame(3, -2, 0, pRenderer);
-	philosophyButton->drawFrame(3, 188, -1, pRenderer);
-	scienceButton->drawFrame(3, 377, 0, pRenderer);
-	computationsButton->drawFrame(3, 567, -1, pRenderer);
-	resourcesButton->drawFrame(3, 848, 0, pRenderer);
+	historyButton->drawFrame();
+	philosophyButton->drawFrame();
+	scienceButton->drawFrame();
+	computationsButton->drawFrame();
+	resourcesButton->drawFrame();
 }
 
 int PageManager::manageEvents(vector <Button *> buttonVector)
@@ -192,7 +200,6 @@ int PageManager::manageEvents(vector <Button *> buttonVector)
 	int y = 0;
 
 	SDL_GetMouseState(&x, &y);
-	cout << "x: " << x << " y: " << y << endl;
 		
 	SDL_Event * event = new SDL_Event();
 
@@ -218,13 +225,11 @@ int PageManager::manageEvents(vector <Button *> buttonVector)
 						&& y > buttonVector.at(z)->top)
 				{
 					buttonVector.at(z)->setCurrentFrame(2);
-					cout << "2nd Frame" << endl;
 				}
 
 				else if (!buttonVector.at(z)->keepButtonPressed)
 				{
 					buttonVector.at(z)->setCurrentFrame(1);
-					cout << "1st Frame" << endl;
 				}
 			}
 
