@@ -7,6 +7,7 @@ Button::Button(int leftBound, int rightBound, int bottomBound, int topBound)
 	right = rightBound;
 	bottom = bottomBound;
 	top = topBound;
+	void(PageManager::*response)(int) = nullptr;
 }
 
 void Button::drawFrame()
@@ -21,6 +22,8 @@ void Button::drawFrame()
 	destRect->w = srcRect->w = srcRect->w / frames;
 	destRect->h = srcRect->h;
 	SDL_RenderCopy(pRenderer, this->getTexture(), srcRect, destRect);
+
+	//cout << "dest-x: " << destRect->x << ", texture: " << this->getTexture() << endl;
 }
 
 int Button::getCurrentFrame()
