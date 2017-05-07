@@ -66,6 +66,15 @@ int PageManager::philosophyPage()
 	functionalismButton->load("Buttons/Functionalism.png", pRenderer, 481, 549, 2);
 	mindBodyButton->load("Buttons/MindBodyProblem.png", pRenderer, 139, 656, 2);
 	consciousnessButton->load("Buttons/Consciousness.png", pRenderer, 215, 739, 2);
+	explanationImages.push_back("DualismText.png");
+	explanationImages.push_back("MonismText.png");
+	explanationImages.push_back("MaterialismText.png");
+	explanationImages.push_back("IdealismText.png");
+	explanationImages.push_back("BehaviorismText.png");
+	explanationImages.push_back("IdentityTheoryText.png");
+	explanationImages.push_back("FunctionalismText.png");
+	explanationImages.push_back("MindBodyProblemText.png");
+	explanationImages.push_back("ConsciousnessText.png");
 
 	vector <Image *> imageVector;
 	imageVector.push_back(philosophyOfMind);
@@ -130,6 +139,9 @@ int PageManager::resourcesPage()
 void PageManager::displayExplanation(int index)
 {
 	cout << "index: " << index << endl;
+	char * fileLocation = explanationImages.at(index);
+	explanation->load(fileLocation, pRenderer, 725, 290);
+	explanation->draw();
 }
 
 int PageManager::renderDisplay(vector <Image *> imageVector, int secondsLooping, vector <Button *> menuVector)
@@ -171,13 +183,13 @@ int PageManager::renderDisplay(vector <Image *> imageVector, int secondsLooping,
 			this->manageEvents();
 		}
 
-		display->update();
-
 		if (pageIndex > 100)
 		{
 			this->displayExplanation(pageIndex - 105);
 			pageIndex = -1;
 		}
+
+		display->update();
 
 	}
 
