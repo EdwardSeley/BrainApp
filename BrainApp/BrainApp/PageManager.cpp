@@ -103,6 +103,11 @@ int PageManager::sciencePage()
 	explanationImages.push_back("Neuroscience.png");
 	explanationImages.push_back("NeuronAnatomy.png");
 	explanationImages.push_back("PotentialDifference.png");
+	explanationImages.push_back("LeakChannels.png");
+	explanationImages.push_back("Depolarization.png");
+	explanationImages.push_back("ActionPotential.png");
+	explanationImages.push_back("SynapticTerminal.png");
+	explanationImages.push_back("VariationInFunction.png");
 	vector <Image *> imageVector;
 	imageVector.push_back(neuroscience);
 	vector <Button *> menuVector = this->loadMenu(pRenderer);
@@ -153,12 +158,13 @@ void PageManager::displayExplanation(int index)
 	{
 		fileLocation = explanationImages.at(index);
 		explanation->load(fileLocation, pRenderer, 725, 290);
+		explanation->draw();
 	}
 	
 	if (neuroscienceButton->keepButtonPressed)
 	{
 		neuroscienceImageCount++;
-		if (neuroscienceImageCount < 3)
+		if (neuroscienceImageCount < 8)
 		{
 			fileLocation = explanationImages.at(neuroscienceImageCount);
 			neuroscience->load(fileLocation, pRenderer, -15, 100);
