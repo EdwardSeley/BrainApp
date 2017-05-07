@@ -91,20 +91,29 @@ int PageManager::philosophyPage()
 	philosophyButton->keepPressed();
 	int pageIndex = this->renderDisplay(imageVector, 0, buttonVector);
 	philosophyButton->release(); //button is no longer pressed
+	explanationImages.clear();
 	return pageIndex;
 }
 
 int PageManager::sciencePage()
 {
-	historyOfNeuroscience->load("HistoryText.png", pRenderer, -15, 100);
+	neuroscience->load("Neuroscience.png", pRenderer, -15, 100);
+	downButton->load("DownButton.png", pRenderer, 520, 800, 2);
+	pumpButton->load(" ", pRenderer, 10, 300, 4);
+	explanationImages.push_back("Neuroscience.png");
+	explanationImages.push_back("NeuronAnatomy.png");
+	explanationImages.push_back("PotentialDifference.png");
 	vector <Image *> imageVector;
-	imageVector.push_back(historyOfNeuroscience);
+	imageVector.push_back(neuroscience);
 	vector <Button *> menuVector = this->loadMenu(pRenderer);
-	scienceButton->keepPressed();
+	menuVector.push_back(downButton);
+	menuVector.push_back(pumpButton);
+	neuroscienceButton->keepPressed();
+	neuroscienceImageCount = 0;
 
 	int pageIndex = this->renderDisplay(imageVector, 0, menuVector);
 
-	scienceButton->release(); //button is no longer pressed
+	neuroscienceButton->release(); //button is no longer pressed
 	return pageIndex;
 }
 
@@ -138,10 +147,31 @@ int PageManager::resourcesPage()
 
 void PageManager::displayExplanation(int index)
 {
-	cout << "index: " << index << endl;
-	char * fileLocation = explanationImages.at(index);
-	explanation->load(fileLocation, pRenderer, 725, 290);
-	explanation->draw();
+	char * fileLocation = "";
+
+	if (philosophyButton->keepButtonPressed)
+	{
+		fileLocation = explanationImages.at(index);
+		explanation->load(fileLocation, pRenderer, 725, 290);
+	}
+	
+	if (neuroscienceButton->keepButtonPressed)
+	{
+		neuroscienceImageCount++;
+		if (neuroscienceImageCount < 3)
+		{
+			fileLocation = explanationImages.at(neuroscienceImageCount);
+			neuroscience->load(fileLocation, pRenderer, -15, 100);
+
+			if (neuroscienceImageCount == 2) {
+				pumpButton->load("pumpButton.png", pRenderer, 10, 300, 4);
+			}
+
+			if (neuroscienceImageCount == 3) {
+				pumpButton->load(" ", pRenderer, 10, 300, 4);
+			}
+		}
+	}
 }
 
 int PageManager::renderDisplay(vector <Image *> imageVector, int secondsLooping, vector <Button *> menuVector)
@@ -201,14 +231,14 @@ vector <Button *> PageManager::loadMenu(SDL_Renderer * pRenderer)
 {
 	historyButton->load("Buttons/HistoryButton.png", pRenderer, -2, 0, 3);
 	philosophyButton->load("Buttons/PhilosophyButton.png", pRenderer, 188, -1, 3);
-	scienceButton->load("Buttons/ScienceButton.png", pRenderer, 377, 0, 3);
+	neuroscienceButton->load("Buttons/ScienceButton.png", pRenderer, 377, 0, 3);
 	computationsButton->load("Buttons/ComputationsButton.png", pRenderer, 567, -1, 3);
 	resourcesButton->load("Buttons/ResourcesButton.png", pRenderer, 848, 0, 3);
 	
 	vector <Button *> menuVector;
 	menuVector.push_back(historyButton);
 	menuVector.push_back(philosophyButton);
-	menuVector.push_back(scienceButton);
+	menuVector.push_back(neuroscienceButton);
 	menuVector.push_back(computationsButton);
 	menuVector.push_back(resourcesButton);
 	return menuVector;
@@ -234,24 +264,42 @@ int PageManager::manageEvents(vector <Button *> buttonVector)
 	if (!buttonVector.empty())
 		for (int z = 0; z < buttonVector.size(); z++)
 			{
-				if (event->type == SDL_MOUSEBUTTONDOWN && event->button.x > buttonVector.at(z)->left && event->button.x < buttonVector.at(z)->right
-					&& event->button.y < buttonVector.at(z)->bottom && event->button.y > buttonVector.at(z)->top)
+			if (event->type == SDL_MOUSEBUTTONDOWN && event->button.x > buttonVector.at(z)->left && event->button.x < buttonVector.at(z)->right
+				&& event->button.y < buttonVector.at(z)->bottom && event->button.y > buttonVector.at(z)->top)
+			{
+				if (buttonVector.at(z)->frames == 3)
 				{
 					buttonVector.at(z)->setCurrentFrame(3);
 					buttonVector.at(z)->clicked = true;
 					return z;
 				}
 
+				else if (neuroscienceButton->keepButtonPressed && z == 5)
+				{
+					return z + 100;
+				}
+
+				else if (neuroscienceButton->keepButtonPressed && z == 6)
+				{
+					pumpButtonCount++;
+					if (pumpButtonCount > 4)
+						pumpButtonCount = 1;
+					buttonVector.at(z)->setCurrentFrame(pumpButtonCount);
+				}
+			}
+
 				else if (x > buttonVector.at(z)->left && x < buttonVector.at(z)->right && y < buttonVector.at(z)->bottom
 						&& y > buttonVector.at(z)->top)
 				{
-					buttonVector.at(z)->setCurrentFrame(2);
-					if (z > 4)
+					if (!neuroscienceButton->keepButtonPressed || z != 6)
+						buttonVector.at(z)->setCurrentFrame(2);
+					if (z > 4 && philosophyButton->keepButtonPressed)
 						return z + 100;
 				}
 
 				else if (!buttonVector.at(z)->keepButtonPressed)
 				{
+					if (!(neuroscienceButton->keepButtonPressed && z == 6))
 					buttonVector.at(z)->setCurrentFrame(1);
 				}
 
